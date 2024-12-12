@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ioriver-url-signer',
-    version='0.1.0',
+    version='0.3.0',
     description='A Python library to sign URLs',
     author='IO River',
     author_email='support@ioriver.io',
