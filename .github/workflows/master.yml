@@ -58,6 +58,7 @@ jobs:
           git push
 
   publish:
+    needs: [build]
     runs-on: ubuntu-22.04
     env:
       TWINE_USERNAME: "__token__"
