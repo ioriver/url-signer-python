@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install python
         if: success() # Last step was performed successfully
@@ -65,7 +65,7 @@ jobs:
       TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build
         if: success() #meaning commit message is: Bump version number so we need to deploy new version
