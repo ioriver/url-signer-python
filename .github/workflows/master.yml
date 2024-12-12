@@ -1,0 +1,80 @@
+name: Master merged
+
+on:
+  push:
+    branches: [ 'master' ]
+  workflow_dispatch:
+    branches: [ 'master' ]
+
+concurrency:
+  group: 'master'
+  cancel-in-progress: true
+
+permissions:
+  contents: 'write'
+  id-token: 'write'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install python
+        if: success() # Last step was performed successfully
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install deps
+        if: success() # Last step was performed successfully
+        run: |
+          pip install -r dev-requirements.txt
+          pip install -r requirements.txt
+
+      - name: Build
+        if: success()
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel twine build
+          python -m build
+
+      - name: Bump Version
+        if: success()
+        run: |
+          pip install --upgrade bumpversion
+          bumpversion --no-tag --no-commit minor
+
+      - name: Push changes
+        if: success()
+        run: |
+          git config --global user.email "url-signer-pythons@ioriver.io"
+          git config --global user.name "url-signer-pythons"
+          git config --global credential.helper store
+          git config --global credential.helper 'cache --timeout=3600'
+          git add .bumpversion.cfg requirements.txt pyproject.toml
+          git commit -m "New version release - Bump version"
+          git push
+
+  publish:
+    runs-on: ubuntu-22.04
+    env:
+      TWINE_USERNAME: "__token__"
+      TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build
+        if: success() #meaning commit message is: Bump version number so we need to deploy new version
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel twine build
+          python -m build
+
+      - name: Publish
+        if: success()
+        run: |
+          pip install twine
+          twine upload --repository pypi --verbose dist/* --non-interactive
