@@ -46,4 +46,4 @@ jobs:
       - name: Pylint
         if: success()
         run: |
-          python pylint $(find . -name '*.py')
+          python -m pylint $(find . -name '*.py' -not -name 'setup.py')

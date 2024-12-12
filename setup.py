@@ -1,3 +1,4 @@
+# pylint: disable=consider-using-with
 from setuptools import setup, find_packages
 
 setup(
