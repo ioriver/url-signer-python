@@ -53,7 +53,7 @@ jobs:
           git config --global user.name "url-signer-pythons"
           git config --global credential.helper store
           git config --global credential.helper 'cache --timeout=3600'
-          git add .bumpversion.cfg requirements.txt pyproject.toml
+          git add .bumpversion.cfg requirements.txt pyproject.toml setup.py
           git commit -m "New version release - Bump version"
           git push
 
