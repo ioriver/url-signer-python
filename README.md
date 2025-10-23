@@ -33,7 +33,7 @@ Below is some example to help you get started:
 ### Step 1: Create URL Signer
 
 ```python
-from url-signer-python import feature
+from ioriver.url_signer import UrlSigner
 
 private_key = "YourPrivateKey"
 encryption_key = "YourEncryptionKey"
@@ -44,7 +44,7 @@ providers_key_info = {
     "fastly_key_id": "5678"
 }
 
-singer = UrlSigner(private_key, encryption_key, providers_key_info)
+signer = UrlSigner(private_key, encryption_key, providers_key_info)
 ```
 
 ### Step 2: Generate Signature
@@ -59,7 +59,7 @@ policy = {
 }
 
 # generate signature for all CDNs
-signature = singer.generate_url_signature(policy)
+signature = signer.generate_url_signature(policy)
 ```
 
 ## API Reference
