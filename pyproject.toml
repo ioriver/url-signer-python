@@ -12,5 +12,10 @@ dependencies = [
     "cryptography>=44.0.0"
 ]
 
+[project.urls]
+# Project links section
+MyHomepage = "https://github.com/ioriver/url-signer-python"
+Documentation = "https://github.com/ioriver/url-signer-python/blob/master/README.md"
+
 # Specify the Python version required for the package
 requires-python = ">=3.9"
