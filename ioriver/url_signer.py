@@ -80,8 +80,8 @@ class UrlSigner:
         if policy.condition.ip_addresses is not None:
             akamai_policy['ip'] = policy.condition.ip_addresses
 
-        et = EdgeAuth(**akamai_policy)
-        token = et.generate_acl_token(policy.resources)
+        edge_auth = EdgeAuth(**akamai_policy)
+        token = edge_auth.generate_acl_token(policy.resources)
         return f"AK-Signature-{self.providers_key_info.akamai_key_id}={token}"
 
     def _make_cloudfront_policy(self, policy: Policy):
