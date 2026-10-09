@@ -81,7 +81,8 @@ class UrlSigner:
             akamai_policy['ip'] = policy.condition.ip_addresses
 
         edge_auth = EdgeAuth(**akamai_policy)
-        token = edge_auth.generate_acl_token(policy.resources)
+        acl = [self._extract_path(policy.resources)]
+        token = edge_auth.generate_acl_token(acl)
         return f"AK-Signature-{self.providers_key_info.akamai_key_id}={token}"
 
     def _make_cloudfront_policy(self, policy: Policy):
@@ -107,6 +108,9 @@ class UrlSigner:
             }
 
         return json.dumps(aws_policy).replace(" ", "")
+
+    def _extract_path(self, resource: str):
+        return urllib.parse.urlparse(resource).path
 
     def _url_base64_encode_cf(self, data: bytes):
         return base64.b64encode(data).replace(b'+', b'-').replace(b'=', b'_').replace(b'/', b'~').decode('utf-8')
